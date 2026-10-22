@@ -6527,6 +6527,9 @@ class APIHandler(BaseHTTPRequestHandler):
 
     def check_model(self, body):
         model = body.get("model")
+        if not model or model in ("default", "colibri"):
+            body["model"] = self.server.model_id
+            return
         if model != self.server.model_id:
             raise APIError(404, f"The model `{model}` does not exist.", "model", "model_not_found")
 
